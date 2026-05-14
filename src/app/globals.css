@@ -1,26 +1,156 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* ===== Primary — Navy (Trust & Authority) ===== */
+  --color-primary-50: #EEF4FF;
+  --color-primary-100: #D9E7FF;
+  --color-primary-200: #B7D2FF;
+  --color-primary-300: #85B5FF;
+  --color-primary-400: #4E8DFF;
+  --color-primary-500: #1E3A8A;
+  --color-primary-600: #1B347C;
+  --color-primary-700: #172E6D;
+  --color-primary-800: #14285E;
+  --color-primary-900: #172554;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ===== Brand — Gold (Premium Identity) ===== */
+  --color-brand-50: #FFF9E8;
+  --color-brand-100: #FDF1C7;
+  --color-brand-200: #F9E3A1;
+  --color-brand-300: #F3D06F;
+  --color-brand-400: #E7BF4A;
+  --color-brand-500: #D4AF37;
+  --color-brand-600: #BE982A;
+  --color-brand-700: #A07E22;
+  --color-brand-800: #80631B;
+  --color-brand-900: #5F4913;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* ===== Success — Emerald (Market Growth) ===== */
+  --color-success-50: #ECFDF5;
+  --color-success-100: #D1FAE5;
+  --color-success-200: #A7F3D0;
+  --color-success-300: #6EE7B7;
+  --color-success-400: #34D399;
+  --color-success-500: #10B981;
+  --color-success-600: #059669;
+  --color-success-700: #047857;
+  --color-success-800: #065F46;
+  --color-success-900: #064E3B;
+
+  /* ===== Surfaces ===== */
+  --color-surface: #F8FAFC;
+  --color-surface-alt: #F1F5F9;
+  --color-surface-paper: #FFFFFF;
+  --color-surface-dark: #0F172A;
+
+  /* ===== Ink (text) ===== */
+  --color-ink: #0F172A;
+  --color-ink-secondary: #334155;
+  --color-ink-muted: #64748B;
+  --color-ink-soft: #94A3B8;
+  --color-ink-inverse: #FFFFFF;
+
+  /* ===== Borders ===== */
+  --color-line-light: #E2E8F0;
+  --color-line: #CBD5E1;
+  --color-line-dark: #94A3B8;
+
+  /* ===== Status ===== */
+  --color-status-success: #10B981;
+  --color-status-error: #EF4444;
+  --color-status-warning: #F59E0B;
+  --color-status-info: #06B6D4;
+
+  /* ===== Portal accents ===== */
+  --color-portal-nepse: #2563EB;
+  --color-portal-demat: #10B981;
+  --color-portal-midas: #D4AF37;
+
+  /* ===== Typography ===== */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* ===== Radius ===== */
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.125rem;
+
+  /* ===== Shadows — subtle, premium ===== */
+  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04);
+  --shadow-md: 0 4px 14px -2px rgb(15 23 42 / 0.06), 0 2px 4px -2px rgb(15 23 42 / 0.04);
+  --shadow-lg: 0 12px 32px -8px rgb(15 23 42 / 0.10), 0 4px 12px -4px rgb(15 23 42 / 0.05);
+  --shadow-card: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 6px -1px rgb(15 23 42 / 0.04);
+  --shadow-card-hover: 0 10px 28px -6px rgb(15 23 42 / 0.10), 0 4px 10px -4px rgb(15 23 42 / 0.06);
+
+  /* ===== Animation ===== */
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 0.6s ease-out both;
+
+  @keyframes fade-up {
+    0%   { opacity: 0; transform: translateY(12px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+  }
+
+  /* Focus ring */
+  :focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+
+  /* Subtle gradient hero backdrop */
+  .bg-hero-gradient {
+    background:
+      radial-gradient(1100px 500px at 20% -10%, rgba(212, 175, 55, 0.10), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(78, 141, 255, 0.10), transparent 60%),
+      linear-gradient(180deg, #14285E 0%, #172554 100%);
+  }
+
+  /* Hairline divider for premium feel */
+  .border-hairline {
+    border-color: color-mix(in srgb, var(--color-line-light) 80%, transparent);
+  }
+
+  /* Animation delay helpers for staggered reveals */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
 }
