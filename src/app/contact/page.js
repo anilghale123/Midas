@@ -5,6 +5,7 @@ import SectionHeading from "@/components/ui/section-heading"
 import PageHero from "@/components/common/page-hero"
 import Badge from "@/components/ui/badge"
 import { contactContent } from "@/data/contact"
+import { getPageContent } from "@/lib/page-content"
 
 export const metadata = {
   title: "Contact Us | MIDAS Stock Broking",
@@ -12,8 +13,10 @@ export const metadata = {
     "Get in touch with MIDAS Stock Broking. Visit our Kathmandu head office or Butwal branch, or reach our Grievance Officer directly.",
 }
 
-export default function ContactPage() {
-  const d = contactContent
+export const revalidate = 3600
+
+export default async function ContactPage() {
+  const d = await getPageContent("contact", contactContent)
 
   return (
     <>

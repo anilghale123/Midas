@@ -7,12 +7,15 @@ import FeatureCard from "@/components/cards/feature-card"
 import PageHero from "@/components/common/page-hero"
 import CTAButton from "@/components/ui/cta-button"
 import { aboutContent } from "@/data/about"
+import { getPageContent } from "@/lib/page-content"
 
 export const metadata = {
   title: "About Us | MIDAS Stock Broking",
   description:
     "MIDAS Stock Broking — the 21st broker member of the Nepal Stock Exchange, regulated by SEBON. Learn about our mission, values, and reach.",
 }
+
+export const revalidate = 3600
 
 const valueIcons = {
   ShieldCheck,
@@ -22,8 +25,8 @@ const valueIcons = {
 
 const valueTones = ["primary", "success", "gold"]
 
-export default function AboutPage() {
-  const d = aboutContent
+export default async function AboutPage() {
+  const d = await getPageContent("about", aboutContent)
 
   return (
     <>

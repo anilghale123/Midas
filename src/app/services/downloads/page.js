@@ -5,6 +5,7 @@ import SectionWrapper from "@/components/ui/section-wrapper"
 import Badge from "@/components/ui/badge"
 import PageHero from "@/components/common/page-hero"
 import { downloadsContent } from "@/data/services"
+import { getPageContent } from "@/lib/page-content"
 
 export const metadata = {
   title: "Downloads | MIDAS Stock Broking",
@@ -12,8 +13,10 @@ export const metadata = {
     "Download the KYC form, DEMAT account opening form, DIS, and other documents required to start trading with MIDAS.",
 }
 
-export default function DownloadsPage() {
-  const d = downloadsContent
+export const revalidate = 3600
+
+export default async function DownloadsPage() {
+  const d = await getPageContent("downloads", downloadsContent)
 
   return (
     <>

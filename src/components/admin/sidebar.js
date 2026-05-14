@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
   Bell,
+  FileText,
   HelpCircle,
   LayoutDashboard,
   ListChecks,
@@ -18,6 +19,7 @@ import { cn } from "@/lib/utils";
 
 const ALL_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, roles: ["SUPER_ADMIN", "EDITOR"] },
+  { href: "/admin/page-content", label: "Site content", icon: FileText, roles: ["SUPER_ADMIN", "EDITOR"] },
   { href: "/admin/notices", label: "Notices", icon: Bell, roles: ["SUPER_ADMIN", "EDITOR"] },
   { href: "/admin/faqs", label: "FAQs", icon: HelpCircle, roles: ["SUPER_ADMIN", "EDITOR"] },
   { href: "/admin/services", label: "Services", icon: ListChecks, roles: ["SUPER_ADMIN", "EDITOR"] },

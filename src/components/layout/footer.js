@@ -20,16 +20,27 @@ const FacebookIcon = (props) => (
   </svg>
 )
 import Container from "@/components/ui/container"
-import { footerData } from "@/data/footer"
+import { footerData as defaultFooter } from "@/data/footer"
 
-const contactItems = [
-  { icon: Phone, label: "01-5970056", href: "tel:01-5970056" },
-  { icon: Mail,  label: "inquiry@midasstock.com.np", href: "mailto:inquiry@midasstock.com.np" },
-  { icon: MapPin, label: "Kamaladi Mode, Kathmandu, Nepal" },
-]
+const Footer = ({ data }) => {
+  // Footer accepts either the legacy shape (columns: { Title: [...] }) or the
+  // CMS-normalised shape (columns: [{ title, links }, ...]). Normalise to the
+  // legacy shape for rendering.
+  const raw = data ?? defaultFooter
 
-const Footer = () => {
-  const g = footerData.grievanceOfficer
+  const columns = Array.isArray(raw.columns)
+    ? Object.fromEntries(raw.columns.map((c) => [c.title, c.links ?? []]))
+    : (raw.columns ?? {})
+
+  const footerData = { ...raw, columns }
+  const g = footerData.grievanceOfficer ?? {}
+
+  // Contact strip — derived from grievance officer + first phone in regulatoryLinks-adjacent data
+  const contactItems = [
+    g.phone && { icon: Phone, label: g.phone, href: `tel:${g.phone}` },
+    g.email && { icon: Mail,  label: g.email, href: `mailto:${g.email}` },
+    { icon: MapPin, label: "Kamaladi Mode, Kathmandu, Nepal" },
+  ].filter(Boolean)
 
   return (
     <footer className="bg-surface-dark text-white/75">

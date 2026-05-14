@@ -18,17 +18,32 @@ import {
   newsletterData,
 } from "@/data/home"
 
-export default function Home() {
+import { getPageContent } from "@/lib/page-content"
+
+export const revalidate = 3600
+
+const FALLBACK = {
+  hero: heroData,
+  marketStats: marketStatsData,
+  accountTypes: accountTypesData,
+  whyTradeShares: whyTradeSharesData,
+  whyMidas: whyMidasData,
+  tradingProcess: tradingProcessData,
+  newsletter: newsletterData,
+}
+
+export default async function Home() {
+  const d = await getPageContent("home", FALLBACK)
   return (
     <div>
-      <HeroSection data={heroData} />
-      <MarketStatsSection data={marketStatsData} />
-      <AccountTypesSection data={accountTypesData} />
-      <WhyTradeSharesSection data={whyTradeSharesData} />
-      <WhyMidasSection data={whyMidasData} />
-      <TradingProcessSection data={tradingProcessData} />
+      <HeroSection data={d.hero ?? heroData} />
+      <MarketStatsSection data={d.marketStats ?? marketStatsData} />
+      <AccountTypesSection data={d.accountTypes ?? accountTypesData} />
+      <WhyTradeSharesSection data={d.whyTradeShares ?? whyTradeSharesData} />
+      <WhyMidasSection data={d.whyMidas ?? whyMidasData} />
+      <TradingProcessSection data={d.tradingProcess ?? tradingProcessData} />
       <LatestNoticesSection data={latestNoticesData} />
-      <NewsletterSection data={newsletterData} />
+      <NewsletterSection data={d.newsletter ?? newsletterData} />
     </div>
   )
 }

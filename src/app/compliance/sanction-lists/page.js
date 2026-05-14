@@ -4,6 +4,7 @@ import SectionWrapper from "@/components/ui/section-wrapper"
 import PageHero from "@/components/common/page-hero"
 import Badge from "@/components/ui/badge"
 import { sanctionLinksContent } from "@/data/sanctions"
+import { getPageContent } from "@/lib/page-content"
 
 export const metadata = {
   title: "Targeted Sanction Lists | MIDAS Stock Broking",
@@ -11,8 +12,10 @@ export const metadata = {
     "AML/CFT compliance — MIDAS Stock Broking screens all client accounts against UN, APG, and MoHA targeted sanction lists.",
 }
 
-export default function SanctionListsPage() {
-  const d = sanctionLinksContent
+export const revalidate = 3600
+
+export default async function SanctionListsPage() {
+  const d = await getPageContent("sanctions", sanctionLinksContent)
 
   return (
     <>

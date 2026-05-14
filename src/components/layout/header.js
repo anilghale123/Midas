@@ -5,7 +5,7 @@ import { Menu, X, TrendingUp, ChevronDown } from "lucide-react"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import CTAButton from "@/components/ui/cta-button"
-import { navigationData, authLinks } from "@/data/navigation"
+import { navigationData as defaultNav, authLinks as defaultAuth } from "@/data/navigation"
 
 const portalAccent = {
   "NEPSE Login": "bg-portal-nepse",
@@ -13,7 +13,9 @@ const portalAccent = {
   "Demat Login": "bg-portal-demat",
 }
 
-const Header = () => {
+const Header = ({ navigation, authLinks }) => {
+  const navigationData = navigation?.length ? navigation : defaultNav
+  const linkSet = authLinks?.length ? authLinks : defaultAuth
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [openMobileSub, setOpenMobileSub] = useState(null)
@@ -37,7 +39,7 @@ const Header = () => {
       {/* Top auth bar */}
       <div className="hidden lg:block bg-primary-900 text-white/85 text-xs">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-end gap-6 py-2">
-          {authLinks.map((link) => {
+          {linkSet.map((link) => {
             const isExternal = link.href?.startsWith("http")
             return (
               <Link
@@ -184,7 +186,7 @@ const Header = () => {
               )}
 
               <div className="mt-3 pt-3 border-t border-line-light grid grid-cols-1 gap-2">
-                {authLinks.map((link) => {
+                {linkSet.map((link) => {
                   const isExternal = link.href?.startsWith("http")
                   return (
                     <Link

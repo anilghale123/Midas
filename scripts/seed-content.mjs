@@ -13,7 +13,21 @@ import mongoose from "mongoose";
 import slugify from "slugify";
 
 import { faqContent } from "../src/data/faq.js";
-import { servicesContent } from "../src/data/services.js";
+import { servicesContent, downloadsContent } from "../src/data/services.js";
+import {
+  heroData,
+  marketStatsData,
+  accountTypesData,
+  whyTradeSharesData,
+  whyMidasData,
+  tradingProcessData,
+  newsletterData,
+} from "../src/data/home.js";
+import { aboutContent } from "../src/data/about.js";
+import { navigationData, authLinks } from "../src/data/navigation.js";
+import { footerData } from "../src/data/footer.js";
+import { contactContent } from "../src/data/contact.js";
+import { sanctionLinksContent } from "../src/data/sanctions.js";
 
 const URI = process.env.MONGODB_URI;
 const DB_NAME = process.env.MONGODB_DB_NAME ?? "midas";
@@ -92,11 +106,21 @@ const SettingsSchema = new mongoose.Schema(
   { timestamps: { createdAt: false, updatedAt: true }, _id: false }
 );
 
+const PageContentSchema = new mongoose.Schema(
+  {
+    key: { type: String, required: true, unique: true },
+    data: { type: mongoose.Schema.Types.Mixed, default: {} },
+    updatedBy: mongoose.Schema.Types.ObjectId,
+  },
+  { timestamps: true, minimize: false }
+);
+
 const FAQ = mongoose.model("FAQ", FAQSchema);
 const Service = mongoose.model("Service", ServiceSchema);
 const Notice = mongoose.model("Notice", NoticeSchema);
 const User = mongoose.model("User", UserSchema);
 const Settings = mongoose.model("Settings", SettingsSchema);
+const PageContent = mongoose.model("PageContent", PageContentSchema);
 
 await mongoose.connect(URI, { dbName: DB_NAME });
 console.log(`Connected to ${DB_NAME}`);
@@ -223,6 +247,50 @@ await Settings.updateOne(
   { upsert: true }
 );
 console.log("Upserted settings");
+
+// Page content — flexible per-page document
+const pageContentSeeds = {
+  home: {
+    hero: heroData,
+    marketStats: marketStatsData,
+    accountTypes: accountTypesData,
+    whyTradeShares: whyTradeSharesData,
+    whyMidas: whyMidasData,
+    tradingProcess: tradingProcessData,
+    newsletter: newsletterData,
+  },
+  about: aboutContent,
+  header: {
+    navigation: navigationData,
+    authLinks,
+  },
+  footer: {
+    companyBio: footerData.companyBio,
+    columns: Object.entries(footerData.columns ?? {}).map(([title, links]) => ({
+      title,
+      links,
+    })),
+    regulatoryLinks: footerData.regulatoryLinks,
+    socialLinks: footerData.socialLinks,
+    grievanceOfficer: footerData.grievanceOfficer,
+    brokerNumber: footerData.brokerNumber,
+    regulator: footerData.regulator,
+  },
+  contact: contactContent,
+  sanctions: sanctionLinksContent,
+  downloads: downloadsContent,
+};
+
+let pcc = 0;
+for (const [key, data] of Object.entries(pageContentSeeds)) {
+  await PageContent.updateOne(
+    { key },
+    { $set: { key, data } },
+    { upsert: true }
+  );
+  pcc++;
+}
+console.log(`Upserted ${pcc} page-content documents`);
 
 await mongoose.disconnect();
 console.log("Done.");
