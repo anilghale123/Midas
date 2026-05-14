@@ -1,10 +1,13 @@
 import Link from "next/link"
 import { MessageCircle, Phone, ArrowRight } from "lucide-react"
+import { unstable_cache } from "next/cache"
 import Container from "@/components/ui/container"
 import SectionWrapper from "@/components/ui/section-wrapper"
 import PageHero from "@/components/common/page-hero"
 import FaqAccordion from "@/components/common/faq-accordion"
 import { faqContent } from "@/data/faq"
+import { connectDB } from "@/lib/mongodb"
+import FAQ from "@/models/FAQ"
 
 export const metadata = {
   title: "FAQ | MIDAS Stock Broking",
@@ -12,8 +15,33 @@ export const metadata = {
     "Common questions about opening an account, DEMAT services, T+2 settlement, and the difference between the MIDAS Account and NEPSE Online Account.",
 }
 
-export default function FaqPage() {
-  const d = faqContent
+export const revalidate = 3600
+
+const getActiveFaqs = unstable_cache(
+  async () => {
+    if (!process.env.MONGODB_URI) return []
+    try {
+      await connectDB()
+      const docs = await FAQ.find({ isActive: true })
+        .sort({ order: 1, createdAt: 1 })
+        .lean()
+      return docs.map((f) => ({
+        id: String(f._id),
+        question: f.question,
+        answer: f.answer,
+      }))
+    } catch {
+      return []
+    }
+  },
+  ["public-faqs"],
+  { tags: ["faqs"], revalidate: 3600 }
+)
+
+export default async function FaqPage() {
+  const dbItems = await getActiveFaqs()
+  const items = dbItems.length > 0 ? dbItems : faqContent.items
+  const d = { ...faqContent, items }
 
   return (
     <>

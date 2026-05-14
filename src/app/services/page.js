@@ -1,5 +1,6 @@
 import { ArrowRight, ExternalLink, Info } from "lucide-react"
 import Link from "next/link"
+import { unstable_cache } from "next/cache"
 import Container from "@/components/ui/container"
 import SectionWrapper from "@/components/ui/section-wrapper"
 import SectionHeading from "@/components/ui/section-heading"
@@ -7,12 +8,50 @@ import Badge from "@/components/ui/badge"
 import PageHero from "@/components/common/page-hero"
 import { cn } from "@/lib/utils"
 import { servicesContent } from "@/data/services"
+import { connectDB } from "@/lib/mongodb"
+import Service from "@/models/Service"
 
 export const metadata = {
   title: "Our Services | MIDAS Stock Broking",
   description:
     "Trade NEPSE shares online, manage your MIDAS back-office account, and access DEMAT custody — all from a single regulated broker.",
 }
+
+export const revalidate = 3600
+
+const ACCENT_BY_CATEGORY = {
+  Trading: "nepse",
+  Advisory: "midas",
+  DEMAT: "demat",
+  IPO: "nepse",
+  Other: "nepse",
+}
+
+const getActiveServices = unstable_cache(
+  async () => {
+    if (!process.env.MONGODB_URI) return []
+    try {
+      await connectDB()
+      const docs = await Service.find({ isActive: true })
+        .sort({ order: 1, createdAt: 1 })
+        .lean()
+      return docs.map((s) => ({
+        id: String(s._id),
+        title: s.title,
+        type: s.category ?? "Service",
+        accent: ACCENT_BY_CATEGORY[s.category] ?? "nepse",
+        description: s.shortDescription || s.description || "",
+        href: s.ctaHref || "#",
+        actionText: s.ctaLabel || "Learn more",
+        external: typeof s.ctaHref === "string" && /^https?:\/\//.test(s.ctaHref),
+      }))
+    } catch {
+      return []
+    }
+  },
+  ["public-services"],
+  { tags: ["services"], revalidate: 3600 }
+)
 
 const accentMap = {
   nepse: { dot: "bg-portal-nepse", ring: "ring-primary-100" },
@@ -26,8 +65,10 @@ const accentBadge = {
   demat: "success",
 }
 
-export default function ServicesPage() {
-  const d = servicesContent
+export default async function ServicesPage() {
+  const dbServices = await getActiveServices()
+  const servicesList = dbServices.length > 0 ? dbServices : servicesContent.servicesList
+  const d = { ...servicesContent, servicesList }
   const { brokerageCommission, dematFees } = d.serviceCharges
 
   return (
