@@ -5,10 +5,20 @@ import {
   MapPin,
   TrendingUp,
   Shield,
-  Facebook,
   UserCheck,
   ExternalLink,
 } from "lucide-react"
+
+const FacebookIcon = (props) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+    {...props}
+  >
+    <path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.9.3-1.5 1.6-1.5H17V4.3c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.4v2.4H7.5v3h2.5V21h3.5z" />
+  </svg>
+)
 import Container from "@/components/ui/container"
 import { footerData } from "@/data/footer"
 
@@ -68,7 +78,7 @@ const Footer = () => {
                     className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
                   >
                     {s.platform === "Facebook" ? (
-                      <Facebook className="h-4 w-4" />
+                      <FacebookIcon className="h-4 w-4" />
                     ) : (
                       <ExternalLink className="h-4 w-4" />
                     )}
