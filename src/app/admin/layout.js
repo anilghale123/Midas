@@ -25,9 +25,9 @@ export default async function AdminLayout({ children }) {
 
   return (
     <AdminProviders>
-      <div className="flex min-h-screen bg-slate-50">
+      <div className="flex h-screen overflow-hidden bg-slate-50">
         <Sidebar user={session.user} />
-        <div className="flex-1 min-w-0">{children}</div>
+        <div className="flex-1 min-w-0 overflow-y-auto">{children}</div>
       </div>
     </AdminProviders>
   );
