@@ -79,7 +79,7 @@ const PageHero = ({
                 {eyebrow}
               </span>
             )}
-            <h1 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight text-balance">
+            <h1 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight text-balance text-brand-400">
               {title}
             </h1>
             {subtitle && (

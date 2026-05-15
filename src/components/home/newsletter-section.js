@@ -23,7 +23,7 @@ const NewsletterSection = ({ data }) => {
                 <Mail className="h-3.5 w-3.5 text-brand-400" />
                 Weekly market digest
               </span>
-              <h2 className="mt-4 text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-balance text-orange-400">
+              <h2 className="mt-4 text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-balance text-brand-400">
                 {data.title}
               </h2>
               <p className="mt-3.5 text-white/70 text-base lg:text-lg leading-relaxed max-w-xl">

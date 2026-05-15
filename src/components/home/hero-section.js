@@ -33,7 +33,7 @@ const HeroSection = ({ data }) => {
               </span>
             )}
 
-            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-balance text-orange-400">
+            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-balance text-brand-400">
               {data.title}
             </h1>
 

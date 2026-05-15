@@ -26,7 +26,7 @@ const SectionHeading = ({
       {title && (
         <h2
           className={cn(
-            "text-3xl sm:text-4xl lg:text-[2.75rem] font-bold leading-[1.1] tracking-tight text-balance",
+            "text-3xl sm:text-4xl lg:text-[2.75rem] font-bold leading-[1.1] tracking-tight text-balance text-brand-400",
             inverse ? "text-white" : "text-ink"
           )}
         >

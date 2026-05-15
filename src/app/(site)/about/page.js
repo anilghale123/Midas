@@ -112,7 +112,7 @@ export default async function AboutPage() {
               aria-hidden
               className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl"
             />
-            <h2 className="relative text-3xl sm:text-4xl font-bold tracking-tight text-balance">
+            <h2 className="relative text-3xl sm:text-4xl font-bold tracking-tight text-balance text-brand-400">
               Ready to invest with a regulated broker?
             </h2>
             <p className="relative mt-4 max-w-xl mx-auto text-white/70 text-base lg:text-lg leading-relaxed">
