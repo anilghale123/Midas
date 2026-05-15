@@ -4,6 +4,7 @@ import { navigationData, authLinks } from "@/data/navigation";
 import { footerData } from "@/data/footer";
 import { getPageContent } from "@/lib/page-content";
 import PageTransition from "@/components/ui/page-transition";
+import ChatWidget from "@/components/chat/chat-widget";
 
 const HEADER_FALLBACK = { navigation: navigationData, authLinks };
 const FOOTER_FALLBACK = {
@@ -33,6 +34,7 @@ export default async function SiteLayout({ children }) {
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer data={footerContent} />
+      <ChatWidget />
     </>
   );
 }

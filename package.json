@@ -11,11 +11,14 @@
     "seed:content": "node --env-file=.env.local scripts/seed-content.mjs"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.73",
+    "@ai-sdk/react": "^3.0.184",
     "@hookform/resolvers": "^5.2.2",
     "@t3-oss/env-nextjs": "^0.13.11",
     "@uiw/react-md-editor": "^4.1.0",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
+    "ai": "^6.0.182",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.10.0",

@@ -23,6 +23,11 @@ export const env = createEnv({
 
     UPSTASH_REDIS_REST_URL: z.string().url(),
     UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
+
+    // MIDAS Assistant (RAG chatbot via @ai-sdk/google). Optional so the
+    // build doesn't fail in environments without AI configured — the route
+    // returns a friendly error if the key is missing at request time.
+    GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1),
@@ -40,6 +45,7 @@ export const env = createEnv({
     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+    GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
     NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
   },
