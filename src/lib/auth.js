@@ -26,7 +26,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const ip = reqHeaders ? clientIpFromHeaders(reqHeaders) : "";
         const ua = reqHeaders?.get("user-agent") ?? "";
 
-        const { success: rlOk } = await loginLimiter.limit(ip || "anon");
+        let rlOk = true;
+        try {
+          const r = await loginLimiter.limit(ip || "anon");
+          rlOk = r.success;
+        } catch (err) {
+          logger.error({ err }, "rate limiter unavailable — failing open");
+        }
         if (!rlOk) {
           await writeAudit({
             action: "LOGIN_FAILED",
@@ -39,6 +45,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         if (!parsed.success) {
+          logger.warn({ issues: parsed.error.issues }, "login schema rejected");
           await writeAudit({
             action: "LOGIN_FAILED",
             userEmail: credentials?.email ?? "",
@@ -57,6 +64,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             .lean();
 
           if (!user || !user.isActive) {
+            logger.warn({ email, found: !!user, active: user?.isActive }, "login: user not found or inactive");
             await writeAudit({
               action: "LOGIN_FAILED",
               userEmail: email,
@@ -68,6 +76,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           const ok = await bcrypt.compare(password, user.passwordHash);
           if (!ok) {
+            logger.warn({ email }, "login: bad password");
             await writeAudit({
               action: "LOGIN_FAILED",
               userId: user._id,
