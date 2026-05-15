@@ -3,6 +3,7 @@ import Footer from "@/components/layout/footer";
 import { navigationData, authLinks } from "@/data/navigation";
 import { footerData } from "@/data/footer";
 import { getPageContent } from "@/lib/page-content";
+import PageTransition from "@/components/ui/page-transition";
 
 const HEADER_FALLBACK = { navigation: navigationData, authLinks };
 const FOOTER_FALLBACK = {
@@ -28,7 +29,9 @@ export default async function SiteLayout({ children }) {
         navigation={headerContent.navigation}
         authLinks={headerContent.authLinks}
       />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        <PageTransition>{children}</PageTransition>
+      </main>
       <Footer data={footerContent} />
     </>
   );
