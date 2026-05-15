@@ -13,17 +13,23 @@
   --color-primary-800: #14285E;
   --color-primary-900: #172554;
 
-  /* ===== Brand — Gold (Premium Identity) ===== */
-  --color-brand-50: #FFF9E8;
-  --color-brand-100: #FDF1C7;
-  --color-brand-200: #F9E3A1;
-  --color-brand-300: #F3D06F;
-  --color-brand-400: #E7BF4A;
-  --color-brand-500: #D4AF37;
-  --color-brand-600: #BE982A;
-  --color-brand-700: #A07E22;
-  --color-brand-800: #80631B;
-  --color-brand-900: #5F4913;
+  /* ===== Brand — Orange (per upgrade.md) ===== */
+  --color-brand: #fb923c;          /* DEFAULT — bg-brand / text-brand */
+  --color-brand-light: #fed7aa;    /* hover tints */
+  --color-brand-dark: #c2410c;     /* pressed states */
+  --color-brand-muted: #fff7ed;    /* subtle bg */
+
+  /* Orange ramp (replaces gold). Components using brand-500 etc. */
+  --color-brand-50: #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-200: #fed7aa;
+  --color-brand-300: #fdba74;
+  --color-brand-400: #fb923c;
+  --color-brand-500: #f97316;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+  --color-brand-800: #9a3412;
+  --color-brand-900: #7c2d12;
 
   /* ===== Success — Emerald (Market Growth) ===== */
   --color-success-50: #ECFDF5;
@@ -38,28 +44,66 @@
   --color-success-900: #064E3B;
 
   /* ===== Surfaces ===== */
-  --color-surface: #F8FAFC;
+  --color-surface: #ffffff;                /* primary card/page bg (per doc) */
+  --color-surface-secondary: #f9fafb;      /* secondary bg */
+  --color-surface-tertiary: #f3f4f6;       /* input bg, sidebar */
+  --color-surface-inverse: #111827;        /* dark bg */
+  /* Legacy aliases (existing components) */
   --color-surface-alt: #F1F5F9;
   --color-surface-paper: #FFFFFF;
   --color-surface-dark: #0F172A;
 
-  /* ===== Ink (text) ===== */
+  /* ===== Ink (text) — legacy ===== */
   --color-ink: #0F172A;
   --color-ink-secondary: #334155;
   --color-ink-muted: #64748B;
   --color-ink-soft: #94A3B8;
   --color-ink-inverse: #FFFFFF;
 
+  /* ===== Text (per doc) — text-primary / text-secondary / text-muted ===== */
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-text-inverse: #f9fafb;
+  --color-text-brand: #fb923c;
+
   /* ===== Borders ===== */
+  --color-border: #e5e7eb;                 /* default */
+  --color-border-strong: #d1d5db;
+  --color-border-muted: #f3f4f6;
+  --color-border-brand: #fb923c;
+  /* Legacy line tokens */
   --color-line-light: #E2E8F0;
   --color-line: #CBD5E1;
   --color-line-dark: #94A3B8;
 
-  /* ===== Status ===== */
+  /* ===== CMS sidebar palette ===== */
+  --color-cms-sidebar: #1a1f2e;
+  --color-cms-sidebar-hover: #252b3b;
+  --color-cms-sidebar-active: #2e3650;
+  --color-cms-sidebar-border: #2a3045;
+  --color-cms-sidebar-text: #94a3b8;
+  --color-cms-sidebar-text-active: #f1f5f9;
+
+  /* ===== Status (legacy) ===== */
   --color-status-success: #10B981;
   --color-status-error: #EF4444;
   --color-status-warning: #F59E0B;
   --color-status-info: #06B6D4;
+
+  /* ===== Semantic palette (per doc) ===== */
+  --color-success: #16a34a;
+  --color-success-light: #dcfce7;
+  --color-success-text: #14532d;
+  --color-warning: #d97706;
+  --color-warning-light: #fef3c7;
+  --color-warning-text: #78350f;
+  --color-danger: #dc2626;
+  --color-danger-light: #fee2e2;
+  --color-danger-text: #7f1d1d;
+  --color-info: #2563eb;
+  --color-info-light: #dbeafe;
+  --color-info-text: #1e3a8a;
 
   /* ===== Portal accents ===== */
   --color-portal-nepse: #2563EB;
@@ -70,10 +114,22 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
+  /* ===== Named spacing ===== */
+  --spacing-page: 1.5rem;          /* p-page, px-page */
+  --spacing-page-lg: 2.5rem;
+  --spacing-section: 4rem;         /* mt-section */
+  --spacing-card: 1.5rem;          /* p-card */
+  --spacing-sidebar: 16rem;        /* w-sidebar */
+  --spacing-sidebar-sm: 4rem;      /* w-sidebar-sm (collapsed) */
+
   /* ===== Radius ===== */
   --radius-lg: 0.625rem;
   --radius-xl: 0.875rem;
   --radius-2xl: 1.125rem;
+  --radius-btn: 0.5rem;            /* rounded-btn */
+  --radius-card: 0.75rem;          /* rounded-card */
+  --radius-badge: 9999px;          /* rounded-badge */
+  --radius-input: 0.5rem;          /* rounded-input */
 
   /* ===== Shadows — subtle, premium ===== */
   --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04);
@@ -82,17 +138,114 @@
   --shadow-card: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 6px -1px rgb(15 23 42 / 0.04);
   --shadow-card-hover: 0 10px 28px -6px rgb(15 23 42 / 0.10), 0 4px 10px -4px rgb(15 23 42 / 0.06);
 
-  /* ===== Animation ===== */
-  --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-fade-in: fade-in 0.6s ease-out both;
+  /* Brand glow + focus ring (per doc) */
+  --shadow-brand: 0 4px 14px 0 rgb(251 146 60 / 0.35);
+  --shadow-input-focus: 0 0 0 3px rgb(251 146 60 / 0.2);
 
-  @keyframes fade-up {
-    0%   { opacity: 0; transform: translateY(12px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
+  /* ===== Easing (--ease-* generates ease-smooth, ease-bounce-in, etc.) ===== */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce-in: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-in-cubic: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out-cubic: cubic-bezier(0, 0, 0.2, 1);
+
+  /* ===== Animation ===== */
+  --animate-fade-in: fade-in 300ms ease-out both;
+  --animate-fade-up: fade-up 400ms cubic-bezier(0, 0, 0.2, 1) both;
+  --animate-fade-down: fade-down 300ms cubic-bezier(0, 0, 0.2, 1) both;
+  --animate-slide-in-left: slide-in-left 300ms cubic-bezier(0, 0, 0.2, 1) both;
+  --animate-slide-in-right: slide-in-right 300ms cubic-bezier(0, 0, 0.2, 1) both;
+  --animate-scale-in: scale-in 200ms cubic-bezier(0, 0, 0.2, 1) both;
+  --animate-fade-up-1: fade-up 400ms 100ms cubic-bezier(0, 0, 0.2, 1) both;
+  --animate-fade-up-2: fade-up 400ms 200ms cubic-bezier(0, 0, 0.2, 1) both;
+  --animate-fade-up-3: fade-up 400ms 300ms cubic-bezier(0, 0, 0.2, 1) both;
+  --animate-fade-up-4: fade-up 400ms 400ms cubic-bezier(0, 0, 0.2, 1) both;
+  --animate-pulse-brand: pulse-brand 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-spin-slow: spin-slow 3s linear infinite;
+  --animate-ticker: ticker 30s linear infinite;
+  --animate-number-up: number-up 300ms ease-out both;
+  --animate-accordion-down: accordion-down 200ms ease-out;
+  --animate-accordion-up: accordion-up 200ms ease-out;
+  --animate-drawer-in: drawer-in 300ms cubic-bezier(0, 0, 0.2, 1);
+  --animate-drawer-out: drawer-out 250ms cubic-bezier(0.4, 0, 1, 1);
+  --animate-modal-in: modal-in 250ms cubic-bezier(0, 0, 0.2, 1);
+  --animate-toast-in: toast-in 300ms cubic-bezier(0, 0, 0.2, 1);
+  --animate-shake: shake 400ms ease-in-out;
+
   @keyframes fade-in {
     0%   { opacity: 0; }
     100% { opacity: 1; }
+  }
+  @keyframes fade-up {
+    0%   { opacity: 0; transform: translateY(16px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-down {
+    0%   { opacity: 0; transform: translateY(-16px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-in-left {
+    0%   { opacity: 0; transform: translateX(-24px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slide-in-right {
+    0%   { opacity: 0; transform: translateX(24px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scale-in {
+    0%   { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pulse-brand {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(251 146 60 / 0.4); }
+    50%      { box-shadow: 0 0 0 8px rgb(251 146 60 / 0); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes spin-slow {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes number-up {
+    0%   { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes accordion-down {
+    0%   { height: 0; }
+    100% { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes accordion-up {
+    0%   { height: var(--radix-accordion-content-height); }
+    100% { height: 0; }
+  }
+  @keyframes drawer-in {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(0); }
+  }
+  @keyframes drawer-out {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+  @keyframes modal-in {
+    0%   { opacity: 0; transform: scale(0.96) translateY(8px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes toast-in {
+    0%   { opacity: 0; transform: translateX(100%); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
   }
 }
 
@@ -122,11 +275,21 @@
     letter-spacing: -0.02em;
   }
 
-  /* Focus ring */
+  /* Focus ring — brand orange (per doc) */
   :focus-visible {
-    outline: 2px solid var(--color-primary-500);
+    outline: 2px solid var(--color-brand);
     outline-offset: 2px;
     border-radius: 4px;
+  }
+
+  /* Respect prefers-reduced-motion globally */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -153,4 +316,15 @@
   .delay-300 { animation-delay: 300ms; }
   .delay-400 { animation-delay: 400ms; }
   .delay-500 { animation-delay: 500ms; }
+
+  /* Named z-index utilities (v4 has no --z-* namespace) */
+  .z-below    { z-index: -1; }
+  .z-base     { z-index:  0; }
+  .z-raised   { z-index: 10; }
+  .z-dropdown { z-index: 20; }
+  .z-sticky   { z-index: 30; }
+  .z-overlay  { z-index: 40; }
+  .z-modal    { z-index: 50; }
+  .z-toast    { z-index: 60; }
+  .z-tooltip  { z-index: 70; }
 }

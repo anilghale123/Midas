@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import AdminProviders from "@/components/admin/providers";
-import Sidebar from "@/components/admin/sidebar";
+import AdminShell from "@/components/admin/admin-shell";
 import { headers } from "next/headers";
 
 export const metadata = {
@@ -18,17 +18,14 @@ export default async function AdminLayout({ children }) {
   if (isLoginRoute || !session?.user) {
     return (
       <AdminProviders>
-        <div className="min-h-screen bg-slate-50">{children}</div>
+        <div className="min-h-screen bg-surface-secondary">{children}</div>
       </AdminProviders>
     );
   }
 
   return (
     <AdminProviders>
-      <div className="flex h-screen overflow-hidden bg-slate-50">
-        <Sidebar user={session.user} />
-        <div className="flex-1 min-w-0 overflow-y-auto">{children}</div>
-      </div>
+      <AdminShell user={session.user}>{children}</AdminShell>
     </AdminProviders>
   );
 }

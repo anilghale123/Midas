@@ -34,7 +34,12 @@ const ALL_ITEMS = [
 
 const STORAGE_KEY = "midas-admin-sidebar-collapsed";
 
-export default function Sidebar({ user }) {
+function roleBadgeClass(role) {
+  if (role === "SUPER_ADMIN") return "bg-brand/15 text-brand";
+  return "bg-info-light text-info-text";
+}
+
+export default function Sidebar({ user, mobile = false, onNavigate }) {
   const pathname = usePathname();
   const role = user?.role ?? "EDITOR";
   const items = ALL_ITEMS.filter((i) => i.roles.includes(role));
@@ -43,12 +48,16 @@ export default function Sidebar({ user }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    if (mobile) {
+      setHydrated(true);
+      return;
+    }
     try {
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (stored === "1") setCollapsed(true);
     } catch {}
     setHydrated(true);
-  }, []);
+  }, [mobile]);
 
   function toggle() {
     setCollapsed((c) => {
@@ -60,43 +69,63 @@ export default function Sidebar({ user }) {
     });
   }
 
+  // Mobile drawer: never collapse, full width, no toggle button.
+  const isCollapsed = !mobile && collapsed;
+
   return (
-    <aside
+    <div
       className={cn(
-        "relative shrink-0 border-r border-slate-200 bg-white flex flex-col h-screen transition-[width] duration-200",
-        collapsed ? "w-16" : "w-64",
-        // Avoid layout flash before hydration
+        "relative flex h-full flex-col bg-cms-sidebar text-cms-sidebar-text border-r border-cms-sidebar-border",
+        mobile ? "w-full" : isCollapsed ? "w-sidebar-sm" : "w-sidebar",
+        !mobile && "transition-[width] duration-base ease-smooth",
         !hydrated && "invisible"
       )}
     >
-      <div className={cn("border-b border-slate-200 flex items-center", collapsed ? "px-3 py-4 justify-center" : "px-5 py-4 justify-between")}>
-        {!collapsed ? (
+      <div
+        className={cn(
+          "flex items-center border-b border-cms-sidebar-border",
+          isCollapsed ? "justify-center px-3 py-4" : "justify-between px-5 py-4"
+        )}
+      >
+        {!isCollapsed ? (
           <div className="min-w-0">
-            <Link href="/admin" className="font-bold text-lg text-slate-900 truncate block">
-              MIDAS CMS
+            <Link
+              href="/admin"
+              onClick={onNavigate}
+              className="block truncate text-lg font-bold text-cms-sidebar-text-active"
+            >
+              MIDA<span className="text-brand">S</span> CMS
             </Link>
-            <p className="text-xs text-slate-500 mt-0.5">Admin Console</p>
+            <p className="mt-0.5 text-xs text-cms-sidebar-text">Admin Console</p>
           </div>
         ) : (
-          <Link href="/admin" className="font-bold text-sm text-slate-900" title="MIDAS CMS">
+          <Link
+            href="/admin"
+            onClick={onNavigate}
+            title="MIDAS CMS"
+            className="text-sm font-bold text-cms-sidebar-text-active"
+          >
             M
           </Link>
         )}
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={cn(
-            "rounded-md border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-700 h-7 w-7 inline-flex items-center justify-center shrink-0",
-            collapsed && "absolute -right-3 top-5 shadow-sm"
-          )}
-        >
-          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-        </button>
+
+        {!mobile && (
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            className={cn(
+              "inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-cms-sidebar-border bg-cms-sidebar text-cms-sidebar-text hover:bg-cms-sidebar-hover hover:text-cms-sidebar-text-active",
+              isCollapsed && "absolute -right-3 top-5 shadow-sm"
+            )}
+          >
+            {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          </button>
+        )}
       </div>
 
-      <nav className={cn("flex-1 py-4 space-y-1", collapsed ? "px-2" : "px-3")}>
+      <nav className={cn("flex-1 space-y-1 py-4 overflow-y-auto", isCollapsed ? "px-2" : "px-3")}>
         {items.map((item) => {
           const Icon = item.icon;
           const active =
@@ -107,20 +136,22 @@ export default function Sidebar({ user }) {
             <Link
               key={item.href}
               href={item.href}
-              title={collapsed ? item.label : undefined}
+              onClick={onNavigate}
+              title={isCollapsed ? item.label : undefined}
+              aria-current={active ? "page" : undefined}
               className={cn(
-                "group relative flex items-center rounded-md text-sm font-medium transition",
-                collapsed ? "justify-center px-2 py-2" : "gap-3 px-3 py-2",
+                "group relative flex items-center rounded-md text-sm font-medium transition-colors duration-fast",
+                isCollapsed ? "justify-center px-2 py-2" : "gap-3 px-3 py-2",
                 active
-                  ? "bg-slate-900 text-white"
-                  : "text-slate-700 hover:bg-slate-100"
+                  ? "bg-cms-sidebar-active text-cms-sidebar-text-active"
+                  : "text-cms-sidebar-text hover:bg-cms-sidebar-hover hover:text-cms-sidebar-text-active"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
-              {!collapsed && <span className="truncate">{item.label}</span>}
+              {!isCollapsed && <span className="truncate">{item.label}</span>}
 
-              {collapsed && (
-                <span className="pointer-events-none absolute left-full ml-2 z-50 whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100">
+              {isCollapsed && (
+                <span className="pointer-events-none absolute left-full ml-2 z-tooltip whitespace-nowrap rounded-md bg-surface-inverse px-2 py-1 text-xs font-medium text-text-inverse opacity-0 shadow-md transition-opacity duration-fast group-hover:opacity-100">
                   {item.label}
                 </span>
               )}
@@ -129,19 +160,24 @@ export default function Sidebar({ user }) {
         })}
       </nav>
 
-      <div className={cn("border-t border-slate-200", collapsed ? "p-2" : "p-4")}>
-        {!collapsed ? (
+      <div className={cn("border-t border-cms-sidebar-border", isCollapsed ? "p-2" : "p-4")}>
+        {!isCollapsed ? (
           <>
             <div className="text-sm">
-              <p className="font-medium text-slate-900 truncate">{user?.name}</p>
-              <p className="text-xs text-slate-500 truncate">{user?.email}</p>
-              <span className="mt-1 inline-block rounded bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
+              <p className="truncate font-medium text-cms-sidebar-text-active">{user?.name}</p>
+              <p className="truncate text-xs text-cms-sidebar-text">{user?.email}</p>
+              <span
+                className={cn(
+                  "mt-1 inline-block rounded-badge px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+                  roleBadgeClass(role)
+                )}
+              >
                 {role}
               </span>
             </div>
             <button
               onClick={() => signOut({ callbackUrl: "/admin/login" })}
-              className="mt-3 flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+              className="mt-3 flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-danger hover:bg-danger/10 transition-colors duration-fast"
             >
               <LogOut className="h-4 w-4" />
               Sign out
@@ -151,15 +187,15 @@ export default function Sidebar({ user }) {
           <button
             onClick={() => signOut({ callbackUrl: "/admin/login" })}
             title={`Sign out (${user?.email ?? ""})`}
-            className="group relative flex w-full items-center justify-center rounded-md px-2 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            className="group relative flex w-full items-center justify-center rounded-md px-2 py-2 text-sm font-medium text-danger hover:bg-danger/10 transition-colors duration-fast"
           >
             <LogOut className="h-4 w-4" />
-            <span className="pointer-events-none absolute left-full ml-2 z-50 whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100">
+            <span className="pointer-events-none absolute left-full ml-2 z-tooltip whitespace-nowrap rounded-md bg-surface-inverse px-2 py-1 text-xs font-medium text-text-inverse opacity-0 shadow-md transition-opacity duration-fast group-hover:opacity-100">
               Sign out
             </span>
           </button>
         )}
       </div>
-    </aside>
+    </div>
   );
 }
