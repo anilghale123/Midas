@@ -1,18 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Sidebar from "@/components/admin/sidebar";
+import ThemeToggle from "@/components/ui/theme-toggle";
 
 export default function AdminShell({ user, children }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    setDrawerOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -31,10 +26,12 @@ export default function AdminShell({ user, children }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [drawerOpen]);
 
+  const closeDrawer = () => setDrawerOpen(false);
+
   return (
     <div className="flex h-screen overflow-hidden bg-surface-secondary">
       {/* Desktop sidebar — always visible at lg+ */}
-      <aside className="hidden lg:flex lg:flex-col flex-shrink-0">
+      <aside className="hidden lg:flex lg:flex-col shrink-0">
         <Sidebar user={user} />
       </aside>
 
@@ -42,7 +39,7 @@ export default function AdminShell({ user, children }) {
       {drawerOpen && (
         <div
           className="fixed inset-0 z-overlay bg-black/60 animate-fade-in lg:hidden"
-          onClick={() => setDrawerOpen(false)}
+          onClick={closeDrawer}
           aria-hidden="true"
         />
       )}
@@ -59,13 +56,13 @@ export default function AdminShell({ user, children }) {
       >
         <button
           type="button"
-          onClick={() => setDrawerOpen(false)}
+          onClick={closeDrawer}
           className="absolute right-4 top-4 z-tooltip rounded-md p-1.5 text-cms-sidebar-text hover:bg-cms-sidebar-hover hover:text-cms-sidebar-text-active transition-colors duration-fast"
           aria-label="Close navigation"
         >
           <X size={18} />
         </button>
-        <Sidebar user={user} mobile onNavigate={() => setDrawerOpen(false)} />
+        <Sidebar user={user} mobile onNavigate={closeDrawer} />
       </aside>
 
       {/* Main column */}
@@ -81,10 +78,16 @@ export default function AdminShell({ user, children }) {
           >
             <Menu size={20} />
           </button>
-          <span className="text-sm font-semibold text-text-primary">
+          <span className="flex-1 text-sm font-semibold text-text-primary">
             MIDA<span className="text-brand">S</span> Admin
           </span>
+          <ThemeToggle />
         </header>
+
+        {/* Desktop top bar (theme toggle) */}
+        <div className="hidden lg:flex items-center justify-end gap-2 border-b border-border bg-surface px-6 py-2.5">
+          <ThemeToggle variant="segmented" />
+        </div>
 
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>

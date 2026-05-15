@@ -1,5 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import AppProviders from "@/components/providers";
+import { NO_FLASH_SCRIPT } from "@/lib/theme";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,8 +16,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} font-sans`}>
-      <body className="min-h-screen flex flex-col">{children}</body>
+    <html lang="en" className={`${inter.variable} font-sans`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }} />
+      </head>
+      <body className="min-h-screen flex flex-col bg-surface text-text-primary">
+        <AppProviders>{children}</AppProviders>
+      </body>
     </html>
   );
 }

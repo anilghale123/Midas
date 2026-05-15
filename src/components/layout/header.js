@@ -5,6 +5,7 @@ import { Menu, X, TrendingUp, ChevronDown } from "lucide-react"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import CTAButton from "@/components/ui/cta-button"
+import ThemeToggle from "@/components/ui/theme-toggle"
 import { navigationData as defaultNav, authLinks as defaultAuth } from "@/data/navigation"
 
 const portalAccent = {
@@ -117,6 +118,7 @@ const Header = ({ navigation, authLinks }) => {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
             <CTAButton variant="ghost" size="sm" href="/login">
               Sign in
             </CTAButton>
@@ -202,6 +204,11 @@ const Header = ({ navigation, authLinks }) => {
                     </Link>
                   )
                 })}
+              </div>
+
+              <div className="mt-3 pt-3 border-t border-line-light flex items-center justify-between">
+                <span className="text-xs font-medium text-ink-muted">Theme</span>
+                <ThemeToggle variant="segmented" />
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-3">

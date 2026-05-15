@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode for Tailwind v4 (default is media-based).
+   Any `.dark` ancestor flips the variant. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* ===== Primary — Navy (Trust & Authority) ===== */
   --color-primary-50: #EEF4FF;
@@ -327,4 +331,49 @@
   .z-modal    { z-index: 50; }
   .z-toast    { z-index: 60; }
   .z-tooltip  { z-index: 70; }
+}
+
+/* ─── DARK MODE TOKEN OVERRIDES ──────────────────────────────────────────
+   When <html class="dark"> is set, these re-scope the CSS custom properties
+   so every `bg-surface`, `text-text-primary`, etc. automatically swaps.
+   The brand orange palette is preserved (only surfaces, text, borders flip). */
+.dark {
+  /* Surfaces */
+  --color-surface: #0f172a;
+  --color-surface-secondary: #1e293b;
+  --color-surface-tertiary: #334155;
+  --color-surface-inverse: #f9fafb;
+
+  /* Text */
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #111827;
+
+  /* Borders */
+  --color-border: #1e293b;
+  --color-border-strong: #334155;
+  --color-border-muted: #0f172a;
+
+  /* Semantic palette (lighter shades for dark backgrounds) */
+  --color-success-light: rgba(34, 197, 94, 0.15);
+  --color-success-text: #86efac;
+  --color-warning-light: rgba(217, 119, 6, 0.15);
+  --color-warning-text: #fcd34d;
+  --color-danger-light: rgba(220, 38, 38, 0.15);
+  --color-danger-text: #fca5a5;
+  --color-info-light: rgba(37, 99, 235, 0.15);
+  --color-info-text: #93c5fd;
+
+  /* Legacy slate-mapped tokens used across older components */
+  --color-ink: #f1f5f9;
+  --color-ink-secondary: #cbd5e1;
+  --color-ink-muted: #94a3b8;
+  --color-ink-soft: #64748b;
+  --color-line-light: #1e293b;
+  --color-line: #334155;
+  --color-surface-alt: #1e293b;
+  --color-surface-paper: #0f172a;
+
+  color-scheme: dark;
 }
