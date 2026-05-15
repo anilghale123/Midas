@@ -45,4 +45,16 @@ export const env = createEnv({
   },
   emptyStringAsUndefined: true,
   skipValidation: process.env.SKIP_ENV_VALIDATION === "true",
+  onValidationError: (issues) => {
+    const formatted = issues.map((i) => {
+      const path = Array.isArray(i.path) ? i.path.join(".") : String(i.path ?? "");
+      return `  - ${path || "(root)"}: ${i.message}`;
+    }).join("\n");
+    console.error(
+      `\nInvalid environment variables:\n${formatted}\n\n` +
+      `Set the missing/invalid vars in Vercel → Settings → Environment Variables ` +
+      `(Production/Preview/Development), then redeploy.\n`
+    );
+    throw new Error("Invalid environment variables");
+  },
 });
